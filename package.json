@@ -1,0 +1,39 @@
+{
+  "name": "slidewalk",
+  "version": "1.0.0",
+  "description": "Lesson outline in, WCAG-gated dual-format deck out: accessible HTML deck + native PPTX from one source of truth, with fail-the-build accessibility gates.",
+  "type": "module",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iwyusdaz/slidewalk.git"
+  },
+  "keywords": [
+    "accessibility",
+    "wcag",
+    "instructional-design",
+    "curriculum-design",
+    "presentation",
+    "pptx",
+    "e-learning"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "axe-core": "4.11.1",
+    "playwright": "1.57.0"
+  },
+  "scripts": {
+    "build": "node skill/scripts/slidewalk.mjs build examples/wcag-authors/outline.md --out docs --theme midnight --pptx --guide --checkpoints",
+    "build:html": "node skill/scripts/slidewalk.mjs build examples/wcag-authors/outline.md --out docs --theme midnight --checkpoints --guide",
+    "build:pptx": "node skill/scripts/slidewalk.mjs pptx docs/deck.json --out docs/deck.pptx",
+    "gates": "node tooling/run-gates.mjs docs/deck.html",
+    "gates:themes": "node tooling/run-gates.mjs tests/theme-probes/probe-slate.html tests/theme-probes/probe-midnight.html tests/theme-probes/probe-ember.html",
+    "gates:negative": "node tooling/run-gates.mjs tests/fixtures/broken-deck.html || true",
+    "outline": "node skill/scripts/slidewalk.mjs parse examples/wcag-authors/outline.md --out docs/deck.json --checkpoints",
+    "guide": "node skill/scripts/slidewalk.mjs guide docs/deck.json --out docs/facilitator-guide.md",
+    "pptx:verify": "tooling-py/verify-pptx.sh docs/deck.pptx docs/deck.json",
+    "theme-probes": "node skill/scripts/build-theme-probes.mjs"
+  }
+}

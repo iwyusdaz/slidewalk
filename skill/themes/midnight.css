@@ -1,0 +1,18 @@
+/* slidewalk theme: "midnight" — dark, low-glare for dim rooms.
+   Palette checked for WCAG 2.1 AA text contrast (all text pairs >= 4.5:1).
+   Verified by tooling/run-gates.mjs against the theme probes BEFORE any deck
+   is generated on top. */
+:root {
+  --bg: #0f1a26;          /* page background */
+  --fg: #f1f5f9;          /* body text      — 15.6:1 on --bg */
+  --muted: #b7c4d1;       /* secondary text —  9.3:1 on --bg */
+  --accent: #8ec2ff;      /* accents/links  —  9.9:1 on --bg */
+  --accent-fg: #0b1b2b;   /* text on accent —  9.5:1 on --accent */
+  --bar-bg: #060d15;      /* top bar background */
+  --bar-fg: #e7edf3;      /* text on topbar — 15.3:1 */
+  --panel-bg: #1a2a3b;    /* checkpoint panel */
+  --notes-bg: #16232f;    /* speaker notes background */
+  --notes-fg: #e4ebf2;    /* speaker notes text — 13.5:1 on --notes-bg */
+  --border: #3d5164;      /* figure borders — non-text UI */
+  --focus: #ffd166;       /* focus outline on dark bg (9.7:1, non-text) */
+}

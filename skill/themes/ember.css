@@ -1,0 +1,18 @@
+/* slidewalk theme: "ember" — warm paper tone, for long reading sessions.
+   Palette checked for WCAG 2.1 AA text contrast (all text pairs >= 4.5:1).
+   Verified by tooling/run-gates.mjs against the theme probes BEFORE any deck
+   is generated on top. */
+:root {
+  --bg: #fffaf3;          /* page background */
+  --fg: #33241a;          /* body text      — 13.9:1 on --bg */
+  --muted: #6b5442;       /* secondary text —  6.0:1 on --bg */
+  --accent: #8a3d00;      /* accents/links  —  6.5:1 on --bg */
+  --accent-fg: #fff8ef;   /* text on accent —  6.4:1 */
+  --bar-bg: #4a2c12;      /* top bar background */
+  --bar-fg: #fdf3e7;      /* text on topbar — 11.6:1 */
+  --panel-bg: #f8ecdc;    /* checkpoint panel */
+  --notes-bg: #f5ecdf;    /* speaker notes background */
+  --notes-fg: #3b2b1e;    /* speaker notes text — 12.3:1 on --notes-bg */
+  --border: #d3b897;      /* figure borders — non-text UI */
+  --focus: #b45309;       /* focus outline (non-text, 3:1+ against bg) */
+}

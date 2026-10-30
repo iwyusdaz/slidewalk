@@ -1,0 +1,18 @@
+/* slidewalk theme: "slate" — light, high-contrast, print-friendly.
+   Palette checked for WCAG 2.1 AA text contrast (all body text pairs >= 4.5:1,
+   accents on their backgrounds >= 4.5:1). Verified by tooling/run-gates.mjs
+   against the theme probes BEFORE any deck is generated on top. */
+:root {
+  --bg: #ffffff;          /* page background */
+  --fg: #1b2733;          /* body text      — 14.4:1 on --bg  */
+  --muted: #4c5a68;       /* secondary text —  7.0:1 on --bg  */
+  --accent: #0b5fa5;      /* accents/links  —  5.9:1 on --bg  */
+  --accent-fg: #ffffff;   /* text on accent —  5.9:1          */
+  --bar-bg: #12293e;      /* top bar background */
+  --bar-fg: #f2f6fa;      /* text on topbar — 13.9:1 on --bar-bg */
+  --panel-bg: #eaf1f7;    /* checkpoint panel */
+  --notes-bg: #f2f5f8;    /* speaker notes background */
+  --notes-fg: #22303d;    /* speaker notes text — 12.4:1 on --notes-bg */
+  --border: #b9c6d2;      /* figure borders — 2.2:1, non-text UI only */
+  --focus: #b45309;       /* focus outline on light bg (3.9:1, non-text) */
+}
