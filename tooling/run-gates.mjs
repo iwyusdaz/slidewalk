@@ -363,5 +363,8 @@ for (const target of targets) {
 
 writeFileSync(join(outDir, "_summary.json"), JSON.stringify(allReports, null, 2));
 await browser.close();
+if (!failed) {
+  console.log("\nreminder: these gates cover automated WCAG 2.1 A/AA checks only — a manual pass, ideally with assistive technology, is still recommended before high-stakes delivery.");
+}
 console.log(failed ? "\ngates: FAILED (exit 1)" : "\ngates: all pass (exit 0)");
 process.exit(failed ? 1 : 0);
