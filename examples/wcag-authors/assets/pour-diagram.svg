@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 200" role="img" aria-label="The four POUR principles arranged left to right: Perceivable, Operable, Understandable, Robust.">
+  <title>The four POUR principles</title>
+  <style>
+    .cell { fill: #eaf1f7; stroke: #0b5fa5; stroke-width: 2; }
+    .word { font: 600 22px system-ui, sans-serif; fill: #1b2733; }
+    .word.small { font-size: 18px; }
+    .cap  { font: 13px system-ui, sans-serif; fill: #4c5a68; }
+  </style>
+  <rect class="cell" x="8"   y="20" width="160" height="160" rx="10"/>
+  <rect class="cell" x="192" y="20" width="160" height="160" rx="10"/>
+  <rect class="cell" x="376" y="20" width="160" height="160" rx="10"/>
+  <rect class="cell" x="560" y="20" width="152" height="160" rx="10"/>
+  <text class="word" x="88"  y="88" text-anchor="middle">Perceivable</text>
+  <text class="cap"  x="88"  y="118" text-anchor="middle">Can everyone</text>
+  <text class="cap"  x="88"  y="138" text-anchor="middle">sense it?</text>
+  <text class="word" x="272" y="88" text-anchor="middle">Operable</text>
+  <text class="cap"  x="272" y="118" text-anchor="middle">Can everyone</text>
+  <text class="cap"  x="272" y="138" text-anchor="middle">use it?</text>
+  <text class="word small" x="456" y="88" text-anchor="middle">Understandable</text>
+  <text class="cap"  x="456" y="118" text-anchor="middle">Does it make</text>
+  <text class="cap"  x="456" y="138" text-anchor="middle">sense?</text>
+  <text class="word" x="636" y="88" text-anchor="middle">Robust</text>
+  <text class="cap"  x="636" y="118" text-anchor="middle">Can machines</text>
+  <text class="cap"  x="636" y="138" text-anchor="middle">read it?</text>
+</svg>

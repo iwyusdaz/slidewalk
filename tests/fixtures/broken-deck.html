@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Broken deck (negative test fixture)</title>
+<style>
+/* Deliberate contrast failure: #999 on #fff is ~2.8:1 */
+body{font-family:sans-serif;margin:0}
+main{padding:2rem}
+p.fail-contrast{color:#999999;font-size:1.2rem}
+</style>
+</head>
+<body>
+<main>
+  <h2>Broken deck — gates must catch this</h2>
+  <!-- seeded failures:
+       1. no lang attribute on <html>
+       2. no <h1> (starts at h2)
+       3. heading order skipped below (h2 -> h4)
+       4. informative image with no alt attribute
+       5. contrast failure paragraph (.fail-contrast)
+       6. keyboard-broken: no navigation exists at all; only one "slide" div with no mechanism -->
+  <div class="slide" id="s1" data-kind="content">
+    <h2>Slide one</h2>
+    <p class="fail-contrast">This paragraph deliberately fails the 4.5:1 contrast minimum.</p>
+    <img src="probe-figure.svg" />
+    <h4>Skipped a heading level on purpose (h2 to h4)</h4>
+  </div>
+</main>
+</body>
+</html>
