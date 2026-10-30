@@ -34,9 +34,9 @@ This file records every evaluation method used on slidewalk, what each can and c
 |---|---|---|---|
 | — | — | — | PENDING: requires a real educator reviewer |
 
-### 6. Fresh-context agent review of the tool — PENDING
+### 6. Fresh-context agent review of the tool — DONE (2026-10-31)
 - **What:** a reviewer agent that did not build the repo runs the pipeline from the README alone, in a fresh context, and reports gaps. It must be disclosed that it may run on the same underlying model family as the builder — that is a limitation, not an independent evaluation.
-- **Status:** not yet run. Brief prepared below; run it before the next minor release.
+- **Status:** run on 2026-10-31. Report: `evaluation/agent-review.md`. Brief prepared below; the brief remains in this repo so the review can be repeated after significant changes.
 
 ### 7. Screen reader pass — NOT DONE
 - Automated VoiceOver (Guidepup) or a manual VoiceOver pass has not been run. This is the most valuable next evaluation and is listed in the README's next steps.

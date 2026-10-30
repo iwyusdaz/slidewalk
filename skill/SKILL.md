@@ -8,7 +8,7 @@ Use when the user needs teaching slides: they have (or can sketch) a lesson outl
 
 1. **The outline** (markdown, format below) — or enough raw material to draft one.
 2. **Theme choice** — `slate` (light), `midnight` (dark), `ember` (warm). Offer the bake-off: build the deck once per theme and let the user pick by looking. Never pick for them without showing.
-3. **Checkpoint cadence** (default: a retrieval-practice checkpoint every 4 content slides).
+3. **Checkpoint cadence** (default: a retrieval-practice checkpoint every 4 content slides; adjust with `--every N` on `parse`/`build`).
 
 ## Outline format
 

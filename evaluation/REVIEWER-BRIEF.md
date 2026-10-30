@@ -1,6 +1,6 @@
-# Reviewer brief — fresh-context agent review of slidewalk (PENDING)
+# Reviewer brief — fresh-context agent review of slidewalk
 
-**Status: not yet run.** This brief is prepared for a reviewer agent that did not build the repository. Run it in a fresh context before the next minor release.
+**Status: run 2026-10-31 — report at `evaluation/agent-review.md`.** This brief is kept so the review can be repeated after significant changes.
 
 ## Disclosure to include in the review output
 This reviewer may run on the same underlying model family as the agent that built the repository. It is therefore a usability/correctness review by a similar AI system, not an independent evaluation and not a substitute for human review.
