@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Accessibility statement — slidewalk</title>
+<meta name="description" content="What was tested with which tools on the slidewalk site and reference deck, what was not tested, and known issues." />
+<style>
+:root{--bg:#ffffff;--fg:#1b2733;--muted:#4c5a68;--accent:#0b5fa5;--panel:#eaf1f7;--border:#b9c6d2}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;background:var(--bg);color:var(--fg)}
+header.site{background:#12293e;color:#f2f6fa;padding:2rem clamp(1rem,4vw,3rem)}
+header.site h1{margin:0;font-size:clamp(1.5rem,4vw,2.2rem)}
+main{max-width:52rem;margin:0 auto;padding:1.5rem clamp(1rem,4vw,3rem) 3rem}
+h2{font-size:1.4rem;margin-top:2rem;border-bottom:2px solid var(--accent);padding-bottom:.25rem}
+a{color:var(--accent)}
+a:focus-visible{outline:3px solid #b45309;outline-offset:2px}
+.notice{background:var(--panel);border-left:.3rem solid var(--accent);padding:.75rem 1rem;border-radius:0 .4rem .4rem 0}
+table{border-collapse:collapse;width:100%;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left;vertical-align:top}
+th{background:var(--panel)}
+footer{max-width:52rem;margin:0 auto;padding:1rem clamp(1rem,4vw,3rem) 3rem;color:var(--muted);font-size:.9rem}
+.skip-link{position:absolute;left:-9999px;background:var(--accent);color:#fff;padding:.6rem 1rem;z-index:10}
+.skip-link:focus{left:.5rem;top:.5rem}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site">
+  <h1>Accessibility statement</h1>
+</header>
+<main id="main">
+
+<p class="notice"><strong>Honest framing:</strong> nothing here claims WCAG conformance or certification. What follows is exactly what was tested, with which tools, on which date — and what was <em>not</em> tested.</p>
+
+<h2>Scope</h2>
+<p>This statement covers: this case-study site (<code>docs/index.html</code> and this page) and the reference deck it links to (<code>docs/deck.html</code>). The gate runner and builders in the repository are code, not user-facing pages, and are out of scope.</p>
+
+<h2>What was tested, and with what (2026-10-31)</h2>
+<table>
+<thead><tr><th>Check</th><th>Tool</th><th>Result on the reference deck</th><th>Result on this site</th></tr></thead>
+<tbody>
+<tr><td>WCAG 2.1 A/AA automated rules (axe rule set: wcag2a, wcag2aa, wcag21a, wcag21aa, best-practice), run with every slide visible</td><td>axe-core 4.11.1 via Playwright (<code>tooling/run-gates.mjs</code>)</td><td>0 critical / 0 serious / 0 moderate / 0 minor violations</td><td>Manual markup to the same baseline: one h1, logical heading order, lang attribute, alt text on informative figures, descriptive links</td></tr>
+<tr><td>Keyboard traversal of every slide (forward, reverse, Home/End, Space, focus movement, notes toggle, no trap)</td><td>Playwright key-event scripting (<code>tooling/run-gates.mjs</code>)</td><td>PASS — all 17 slides</td><td>Single page; skip link and focus-visible styles present</td></tr>
+<tr><td>Reflow at 320 px viewport width, every slide</td><td>Playwright (<code>tooling/run-gates.mjs</code>)</td><td>PASS — no horizontal scroll</td><td>Fluid layout, no fixed widths</td></tr>
+<tr><td>Text contrast ≥ 4.5:1</td><td>axe color-contrast</td><td>PASS</td><td>Palette follows the same token approach as the slate theme</td></tr>
+<tr><td>Alt text on informative images; decorative images marked</td><td>axe image-alt + explicit DOM scan</td><td>PASS (1 informative figure, described alt text)</td><td>3 screenshots with descriptive alt text; figure captions identify them as screenshots</td></tr>
+<tr><td>Negative control (gates catch seeded failures)</td><td><code>sh tests/run-negative-tests.sh</code></td><td>PASS — 6 seeded failure classes caught, non-zero exit</td><td>n/a</td></tr>
+</tbody>
+</table>
+
+<h2>What was NOT tested</h2>
+<ul>
+<li><strong>No screen reader testing.</strong> Nobody has operated this deck with VoiceOver, NVDA or JAWS. Automated checks cannot tell you what a screen reader user actually experiences.</li>
+<li><strong>No testing with people.</strong> No disabled users, no educators, no learners have reviewed the deck or the site.</li>
+<li><strong>Alt text quality.</strong> The gates verify alt text exists; only a human can judge whether it is good.</li>
+<li><strong>The PPTX.</strong> The PowerPoint file shares the deck's text and notes but has not been checked with PowerPoint's built-in Accessibility Checker. If you distribute the PPTX, run that check once in PowerPoint.</li>
+</ul>
+
+<h2>Known issues and limitations</h2>
+<ul>
+<li>Speaker notes are hidden until toggled (button or <kbd>N</kbd>). Screen reader users can reach them via the toggle; they are always included in print and in the PPTX notes pane.</li>
+<li>The deck relies on JavaScript for slide navigation. Without JavaScript, all slides render as a scrollable document (the <code>hidden</code> attribute is applied by script, so no-JS readers still get full content). This has not been verified with a no-JS screen reader pass.</li>
+<li>Auto-generated checkpoint questions have not been reviewed by an educator.</li>
+</ul>
+
+<h2>Feedback</h2>
+<p>Found a barrier? Open an issue at <a href="https://github.com/iwyusdaz/slidewalk/issues">github.com/iwyusdaz/slidewalk/issues</a>.</p>
+
+</main>
+<footer>
+<p>Back to the <a href="index.html">case study</a>. Statement last reviewed: 2026-10-31.</p>
+</footer>
+</body>
+</html>

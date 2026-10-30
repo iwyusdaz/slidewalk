@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Intro to WCAG for content authors — accessible slide deck</title>
+<meta name="description" content="A plain-language introduction to WCAG 2.1 for people who write and publish web content — what the four POUR principles mean for your daily work, and the checks to run before you hit publish." />
+<meta name="generator" content="slidewalk 1.0" />
+<style>
+:root{--focus:#1a0dab}
+/* slidewalk theme: "midnight" — dark, low-glare for dim rooms.
+   Palette checked for WCAG 2.1 AA text contrast (all text pairs >= 4.5:1).
+   Verified by tooling/run-gates.mjs against the theme probes BEFORE any deck
+   is generated on top. */
+:root {
+  --bg: #0f1a26;          /* page background */
+  --fg: #f1f5f9;          /* body text      — 15.6:1 on --bg */
+  --muted: #b7c4d1;       /* secondary text —  9.3:1 on --bg */
+  --accent: #8ec2ff;      /* accents/links  —  9.9:1 on --bg */
+  --accent-fg: #0b1b2b;   /* text on accent —  9.5:1 on --accent */
+  --bar-bg: #060d15;      /* top bar background */
+  --bar-fg: #e7edf3;      /* text on topbar — 15.3:1 */
+  --panel-bg: #1a2a3b;    /* checkpoint panel */
+  --notes-bg: #16232f;    /* speaker notes background */
+  --notes-fg: #e4ebf2;    /* speaker notes text — 13.5:1 on --notes-bg */
+  --border: #3d5164;      /* figure borders — non-text UI */
+  --focus: #ffd166;       /* focus outline on dark bg (9.7:1, non-text) */
+}
+
+
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:auto}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;background:var(--bg);color:var(--fg)}
+.skip-link{position:absolute;left:-9999px;top:0;background:var(--accent);color:var(--accent-fg);padding:.6rem 1rem;z-index:20;border-radius:0 0 .35rem 0}
+.skip-link:focus{left:0}
+.topbar{display:flex;flex-wrap:wrap;gap:.5rem 1rem;align-items:baseline;justify-content:space-between;padding:.6rem clamp(.75rem,3vw,1.5rem);background:var(--bar-bg);color:var(--bar-fg);border-bottom:2px solid var(--accent)}
+.topbar h1{font-size:clamp(.85rem,2.5vw,1rem);margin:0;font-weight:600}
+.counter{margin:0;font-size:.85rem;color:var(--bar-fg);white-space:nowrap}
+.progress{height:.25rem;background:var(--bar-bg)}
+.progress>span{display:block;height:100%;background:var(--accent);width:0}
+.stage{padding:clamp(1rem,4vw,3rem);max-width:60rem;margin:0 auto}
+.slide{margin:0 auto;padding:clamp(1.25rem,4vw,3rem) 0;max-width:52rem}
+.slide[hidden]{display:none}
+.slide h2{font-size:clamp(1.5rem,4.5vw,2.4rem);line-height:1.2;margin:.2rem 0 1rem;color:var(--fg)}
+.kicker{font-size:.85rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin:0 0 .5rem;font-weight:600}
+.slide-list{padding-left:1.25rem;margin:0 0 1rem}
+.slide-list li{margin:.5rem 0;font-size:clamp(1.05rem,2.8vw,1.35rem);overflow-wrap:break-word}
+.title-meta{list-style:none;padding:0;font-size:clamp(1rem,2.5vw,1.2rem);color:var(--muted)}
+.section-list{list-style:none;padding:0;color:var(--muted);font-size:clamp(1rem,2.5vw,1.2rem)}
+.slide[aria-roledescription="slide"][data-kind="section"] h2,
+.slide[data-kind="title"] h2{font-size:clamp(1.9rem,6vw,3.2rem)}
+.slide-figure{margin:1rem 0}
+.slide-figure img{max-width:100%;height:auto;display:block;border:1px solid var(--border);border-radius:.4rem;background:#fff}
+.speaker-notes{display:none;border-left:.3rem solid var(--accent);background:var(--notes-bg);color:var(--notes-fg);padding:.75rem 1rem;margin-top:1.5rem;border-radius:0 .4rem .4rem 0}
+body.show-notes .speaker-notes{display:block}
+.speaker-notes h3{margin:0 0 .35rem;font-size:.85rem;text-transform:uppercase;letter-spacing:.06em;color:var(--accent)}
+.speaker-notes p{margin:0;font-size:.95rem}
+.checkpoint-label{display:inline-block;font-size:.8rem;font-weight:600;color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:.15rem .7rem;margin:0 0 .75rem}
+.checkpoint-box{background:var(--panel-bg);border:2px solid var(--accent);border-radius:.6rem;padding:clamp(1rem,3vw,2rem);margin:1rem 0}
+.checkpoint-q{margin:0;font-size:clamp(1.2rem,3.5vw,1.8rem);font-weight:600}
+.checkpoint-source{font-size:.85rem;color:var(--muted);margin:.25rem 0 0}
+.toolbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;justify-content:space-between;padding:.75rem clamp(.75rem,3vw,1.5rem) 1.5rem;max-width:60rem;margin:0 auto}
+.toolbar .controls{display:flex;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;cursor:pointer;background:var(--accent);color:var(--accent-fg);border:2px solid var(--accent);border-radius:.4rem;padding:.45rem .9rem;font-weight:600}
+button:disabled{opacity:.45;cursor:not-allowed}
+button[aria-pressed="true"]{background:var(--panel-bg);color:var(--accent)}
+:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+.hint{font-size:.8rem;color:var(--muted);margin:.25rem 0 0}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+@media print{
+  .topbar,.toolbar,.progress,.skip-link{display:none}
+  .slide[hidden]{display:block}
+  .speaker-notes{display:block}
+  .slide{page-break-after:always}
+}
+
+</style>
+</head>
+<body>
+<a class="skip-link" href="#s1">Skip to first slide</a>
+<header class="topbar">
+  <h1>Intro to WCAG for content authors</h1>
+  <p class="counter" id="counter" aria-live="polite">Slide 1 of 17</p>
+</header>
+<div class="progress" aria-hidden="true"><span id="progress-fill"></span></div>
+<main id="main" class="stage">
+  <section class="slide" id="s1" data-kind="title" role="group" aria-roledescription="slide" aria-label="Slide 1 of 17: Intro to WCAG for content authors">
+    <p class="kicker">Slide 1 of 17</p>
+  <h2 id="s1-h" tabindex="-1">Intro to WCAG for content authors</h2>
+  <ul class="slide-list title-meta"><li>No code required — this session is about the words, links, images and structure you publish</li><li>Two short checkpoints: answer from memory, wrong answers welcome</li><li>Everything today maps to WCAG 2.1 levels A and AA</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Welcome people as they arrive. Say up front that there is no code in this session: everything here is about decisions writers and editors make every day. Mention that there will be two short checkpoints where the group answers questions from memory — that is retrieval practice, and getting things wrong there is the point.</p></div>
+  </section>
+  <section class="slide" id="s2" data-kind="section" role="group" aria-roledescription="slide" aria-label="Slide 2 of 17: Part 1 — Why WCAG belongs to you" hidden>
+    <p class="kicker">Section</p>
+  <h2 id="s2-h" tabindex="-1">Part 1 — Why WCAG belongs to you</h2>
+  <ul class="slide-list section-list"><li>First: the mental model (POUR)</li><li>Then: the everyday checklist</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Signpost the two halves of the session. Part 1 is the mental model; Part 2 is the practical checklist people can use tomorrow.</p></div>
+  </section>
+  <section class="slide" id="s3" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 3 of 17: Accessibility is part of your job" hidden>
+    <h2 id="s3-h" tabindex="-1">Accessibility is part of your job</h2>
+  <ul class="slide-list"><li>The words you write become what screen readers speak</li><li>Missing alt text, vague links and walls of text are content decisions, not code bugs</li><li>Retrofitting is expensive; writing it right the first time is nearly free</li><li>Legal reality: public-sector bodies (and many private ones) must meet WCAG 2.1 AA</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Ask the room who they think &quot;owns&quot; accessibility. Most people point at developers. Walk through the three examples on the slide — every one of them is a writing or publishing decision. Developers can only make accessible what content gives them. A screen reader can only read the words that were written.</p></div>
+  </section>
+  <section class="slide" id="s4" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 4 of 17: What WCAG is — and isn't" hidden>
+    <h2 id="s4-h" tabindex="-1">What WCAG is — and isn't</h2>
+  <ul class="slide-list"><li>WCAG = Web Content Accessibility Guidelines, published by the W3C</li><li>Three conformance levels: A (must), AA (should, and usually the legal bar), AAA (aspirational)</li><li>It is technology-neutral: principles and testable criteria, not a code recipe</li><li>Meeting AA is a floor, not a guarantee — real users still need to be listened to</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Keep this short — it is orientation, not legal training. Emphasise that WCAG is technology-neutral: it says &quot;provide text alternatives&quot;, not &quot;use this attribute&quot;. The pass/fail line for most organisations is AA; AAA is aspirational for most content. Be honest that meeting WCAG does not guarantee a good experience for every disabled user — it is a floor, not a ceiling.</p></div>
+  </section>
+  <section class="slide" id="s5" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 5 of 17: The four POUR principles" hidden>
+    <h2 id="s5-h" tabindex="-1">The four POUR principles</h2>
+  <ul class="slide-list"><li>Perceivable — can everyone sense it?</li><li>Operable — can everyone use it?</li><li>Understandable — does it make sense?</li><li>Robust — can machines read it?</li></ul>
+  <figure class="slide-figure">
+  <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA3MjAgMjAwIiByb2xlPSJpbWciIGFyaWEtbGFiZWw9IlRoZSBmb3VyIFBPVVIgcHJpbmNpcGxlcyBhcnJhbmdlZCBsZWZ0IHRvIHJpZ2h0OiBQZXJjZWl2YWJsZSwgT3BlcmFibGUsIFVuZGVyc3RhbmRhYmxlLCBSb2J1c3QuIj4KICA8dGl0bGU+VGhlIGZvdXIgUE9VUiBwcmluY2lwbGVzPC90aXRsZT4KICA8c3R5bGU+CiAgICAuY2VsbCB7IGZpbGw6ICNlYWYxZjc7IHN0cm9rZTogIzBiNWZhNTsgc3Ryb2tlLXdpZHRoOiAyOyB9CiAgICAud29yZCB7IGZvbnQ6IDYwMCAyMnB4IHN5c3RlbS11aSwgc2Fucy1zZXJpZjsgZmlsbDogIzFiMjczMzsgfQogICAgLndvcmQuc21hbGwgeyBmb250LXNpemU6IDE4cHg7IH0KICAgIC5jYXAgIHsgZm9udDogMTNweCBzeXN0ZW0tdWksIHNhbnMtc2VyaWY7IGZpbGw6ICM0YzVhNjg7IH0KICA8L3N0eWxlPgogIDxyZWN0IGNsYXNzPSJjZWxsIiB4PSI4IiAgIHk9IjIwIiB3aWR0aD0iMTYwIiBoZWlnaHQ9IjE2MCIgcng9IjEwIi8+CiAgPHJlY3QgY2xhc3M9ImNlbGwiIHg9IjE5MiIgeT0iMjAiIHdpZHRoPSIxNjAiIGhlaWdodD0iMTYwIiByeD0iMTAiLz4KICA8cmVjdCBjbGFzcz0iY2VsbCIgeD0iMzc2IiB5PSIyMCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSIxNjAiIHJ4PSIxMCIvPgogIDxyZWN0IGNsYXNzPSJjZWxsIiB4PSI1NjAiIHk9IjIwIiB3aWR0aD0iMTUyIiBoZWlnaHQ9IjE2MCIgcng9IjEwIi8+CiAgPHRleHQgY2xhc3M9IndvcmQiIHg9Ijg4IiAgeT0iODgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlBlcmNlaXZhYmxlPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJjYXAiICB4PSI4OCIgIHk9IjExOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Q2FuIGV2ZXJ5b25lPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJjYXAiICB4PSI4OCIgIHk9IjEzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2Vuc2UgaXQ/PC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJ3b3JkIiB4PSIyNzIiIHk9Ijg4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5PcGVyYWJsZTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iY2FwIiAgeD0iMjcyIiB5PSIxMTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNhbiBldmVyeW9uZTwvdGV4dD4KICA8dGV4dCBjbGFzcz0iY2FwIiAgeD0iMjcyIiB5PSIxMzgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnVzZSBpdD88L3RleHQ+CiAgPHRleHQgY2xhc3M9IndvcmQgc21hbGwiIHg9IjQ1NiIgeT0iODgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlVuZGVyc3RhbmRhYmxlPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJjYXAiICB4PSI0NTYiIHk9IjExOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+RG9lcyBpdCBtYWtlPC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJjYXAiICB4PSI0NTYiIHk9IjEzOCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2Vuc2U/PC90ZXh0PgogIDx0ZXh0IGNsYXNzPSJ3b3JkIiB4PSI2MzYiIHk9Ijg4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Sb2J1c3Q8L3RleHQ+CiAgPHRleHQgY2xhc3M9ImNhcCIgIHg9IjYzNiIgeT0iMTE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DYW4gbWFjaGluZXM8L3RleHQ+CiAgPHRleHQgY2xhc3M9ImNhcCIgIHg9IjYzNiIgeT0iMTM4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5yZWFkIGl0PzwvdGV4dD4KPC9zdmc+Cg==" alt="Diagram of the four POUR principles, each with a plain-language question: Perceivable — can everyone sense it? Operable — can everyone use it? Understandable — does it make sense? Robust — can machines read it?" />
+</figure>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>This is the backbone of the whole session — spend time here. Read the diagram aloud and give a one-line plain-language version of each principle. Tell learners the next four slides take one principle each, and that the checkpoint right after will ask them to recall the four from memory. Encourage them to translate each principle into a question they would ask about their own pages. The plain-language questions on the diagram are the ones learners should memorise.</p></div>
+  </section>
+  <section class="slide" id="s6" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 6 of 17: Perceivable — alternatives you provide" hidden>
+    <h2 id="s6-h" tabindex="-1">Perceivable — alternatives you provide</h2>
+  <ul class="slide-list"><li>Alt text for meaningful images; empty alt for decorative ones</li><li>Captions for video; transcripts for audio</li><li>&quot;chart.png&quot; is not alt text — describe what the reader would miss</li><li>Test: if the image vanished, what information would be gone? That is your alt text</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Give the fail-forward example: an image of a chart with alt text &quot;chart.png&quot; helps nobody. The test for alt text: close your eyes and have someone read the page — would you get the same information? Mention that decorative images should get empty alt text so screen readers skip them, which is a decision only the author can make. Captions benefit far more people than deaf users: people in open offices, on trains, with sound muted.</p></div>
+  </section>
+  <section class="slide" id="s7" data-kind="checkpoint" role="group" aria-roledescription="slide" aria-label="Slide 7 of 17: Retrieval checkpoint — Checkpoint — Perceivable and POUR" hidden>
+    <p class="checkpoint-label">Auto-generated retrieval prompt — review before teaching</p>
+  <h2 id="s7-h" tabindex="-1">Checkpoint — Perceivable and POUR</h2>
+  <div class="checkpoint-box"><p class="checkpoint-q">Without looking back: name the four POUR principles, then give one concrete example of a Perceivable fix in your own content.</p></div>
+  <p class="checkpoint-source">Drawn from: “The four POUR principles”</p>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Auto-generated retrieval prompt drawn from the objective of slide &quot;The four POUR principles&quot;. Let the room answer before advancing; the source slide follows immediately for confirmation. Review and personalize this prompt before teaching.</p></div>
+  </section>
+  <section class="slide" id="s8" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 8 of 17: Operable — everything works by keyboard" hidden>
+    <h2 id="s8-h" tabindex="-1">Operable — everything works by keyboard</h2>
+  <ul class="slide-list"><li>Some users cannot use a mouse — tremors, RSI, screen-reader or switch users</li><li>If it works by click, it must work by keyboard (Tab, Enter, arrows)</li><li>Visible focus outline is a feature, not a design flaw</li><li>Hover-only menus and click-only widgets are the usual suspects</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Ask people to unplug their mouse for thirty seconds and try their own site — this lands harder than any explanation. The common content-side keyboard killers are components that only respond to click and links hidden behind hover-only menus. Also mention: never remove the focus outline because it &quot;looks ugly&quot;; visible focus is how keyboard users know where they are.</p></div>
+  </section>
+  <section class="slide" id="s9" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 9 of 17: Understandable — plain language, predictable pages" hidden>
+    <h2 id="s9-h" tabindex="-1">Understandable — plain language, predictable pages</h2>
+  <ul class="slide-list"><li>Short sentences, common words, expand acronyms on first use</li><li>Say the same thing the same way everywhere (labels, buttons, menus)</li><li>Consistent navigation helps people who rely on memory and habit</li><li>Plain language helps everyone — including your stressed, distracted expert users</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Read a sentence from your own organisation's site that fails the plain-language test and fix it live if you can. Predictability means menus and terms stay the same across pages — consistency is an editorial job. Explain that this principle exists largely for people with cognitive and learning disabilities, the largest disability group that WCAG's cognitive criteria serve.</p></div>
+  </section>
+  <section class="slide" id="s10" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 10 of 17: Robust — markup assistive tech can read" hidden>
+    <h2 id="s10-h" tabindex="-1">Robust — markup assistive tech can read</h2>
+  <ul class="slide-list"><li>Use real headings, real lists, real tables — not bold text that looks like them</li><li>Meaning you write becomes structure assistive tech navigates by</li><li>Fake structure (visual-only headings, space-formatted tables) is invisible to machines</li><li>Agree with your developers on what &quot;good content&quot; hands over</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>This is the principle authors share with developers, so frame it as a collaboration contract: authors supply meaning, developers supply markup that preserves it. The classic failure is a visually bold line that is not a real heading — it looks structured but screen readers see a paragraph. Same for fake tables made of tabs and spaces in a PDF. If the machine cannot see the structure, no amount of styling helps.</p></div>
+  </section>
+  <section class="slide" id="s11" data-kind="checkpoint" role="group" aria-roledescription="slide" aria-label="Slide 11 of 17: Retrieval checkpoint — Checkpoint — Operable, Understandable, Robust" hidden>
+    <p class="checkpoint-label">Auto-generated retrieval prompt — review before teaching</p>
+  <h2 id="s11-h" tabindex="-1">Checkpoint — Operable, Understandable, Robust</h2>
+  <div class="checkpoint-box"><p class="checkpoint-q">Quick self-check: give one concrete example from your own content where each of Operable, Understandable and Robust applies.</p></div>
+  <p class="checkpoint-source">Drawn from: “Understandable — plain language, predictable pages”</p>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Auto-generated retrieval prompt drawn from the objective of slide &quot;Understandable — plain language, predictable pages&quot;. Let the room answer before advancing; the source slide follows immediately for confirmation. Review and personalize this prompt before teaching.</p></div>
+  </section>
+  <section class="slide" id="s12" data-kind="section" role="group" aria-roledescription="slide" aria-label="Slide 12 of 17: Part 2 — Your everyday checklist" hidden>
+    <p class="kicker">Section</p>
+  <h2 id="s12-h" tabindex="-1">Part 2 — Your everyday checklist</h2>
+  <ul class="slide-list section-list"><li>Four checks, five minutes, every page</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Signpost: four checks, all doable in under five minutes per page.</p></div>
+  </section>
+  <section class="slide" id="s13" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 13 of 17: Alt text that actually works" hidden>
+    <h2 id="s13-h" tabindex="-1">Alt text that actually works</h2>
+  <ul class="slide-list"><li>Informative image → describe the information it carries</li><li>Decorative image → alt=&quot;&quot; so screen readers skip it</li><li>Image inside a link → alt text is the action (&quot;Search&quot;, not &quot;icon&quot;)</li><li>Never stuff keywords, never leave &quot;image1.jpg&quot;</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Walk the three cases. Informative images: describe the information, not the picture. Decorative: empty alt, and let them go. Functional (an image inside a link or button): the alt text is the action — &quot;Search&quot;, not &quot;magnifying glass icon&quot;. Warn about the two classic failures: keyword-stuffed alt text for SEO, and file names pasted in as alt.</p></div>
+  </section>
+  <section class="slide" id="s14" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 14 of 17: Contrast — text everyone can read" hidden>
+    <h2 id="s14-h" tabindex="-1">Contrast — text everyone can read</h2>
+  <ul class="slide-list"><li>Body text: at least 4.5:1 against its background</li><li>Large text (18pt+ or 14pt bold): at least 3:1</li><li>Light grey body text in templates is the most common failure</li><li>Free tools: WebAIM contrast checker, or your browser's DevTools</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Show the numbers, then show a real contrast checker (the WebAIM contrast checker or the browser DevTools) on a fail and a pass. Mention low-contrast grey-on-white body text as the most common offender in corporate templates. Also flag that light-grey placeholder text in forms usually fails too.</p></div>
+  </section>
+  <section class="slide" id="s15" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 15 of 17: Links, headings and structure" hidden>
+    <h2 id="s15-h" tabindex="-1">Links, headings and structure</h2>
+  <ul class="slide-list"><li>Link text must make sense out of context — screen readers skim by link list</li><li>&quot;Click here&quot; and &quot;read more&quot; fail that test; name the destination instead</li><li>Headings in order (h1 → h2 → h3), used for structure, not for font size</li><li>Many screen-reader users navigate entirely by headings</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>The classic test: read only the links on a page aloud — &quot;click here&quot;, &quot;read more&quot;, &quot;learn more&quot; tells a screen-reader user nothing, because many of them skim by link list. For headings: many screen-reader users navigate by heading list, so heading levels must be real and in order. Warn against skipping levels for visual size — that is what CSS is for.</p></div>
+  </section>
+  <section class="slide" id="s16" data-kind="content" role="group" aria-roledescription="slide" aria-label="Slide 16 of 17: Check your work before you publish" hidden>
+    <h2 id="s16-h" tabindex="-1">Check your work before you publish</h2>
+  <ul class="slide-list"><li>Run an automated check (axe DevTools, WAVE) — it catches roughly a third of issues</li><li>Tab through the page without a mouse</li><li>Read your alt text aloud: would you get the same information?</li><li>Automated passes are a floor, not a certificate — real users are the real test</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Frame this as the habit that makes everything stick. Automated tools catch about a third of issues — they find missing alt text and contrast failures, but cannot judge whether alt text is good. The keyboard pass catches what machines miss. Close with the honest framing: WCAG AA is the floor; listening to disabled users is how you get past it.</p></div>
+  </section>
+  <section class="slide" id="s17" data-kind="section" role="group" aria-roledescription="slide" aria-label="Slide 17 of 17: Wrap-up — your routine and where to go next" hidden>
+    <p class="kicker">Section</p>
+  <h2 id="s17-h" tabindex="-1">Wrap-up — your routine and where to go next</h2>
+  <ul class="slide-list section-list"><li>Ask the four POUR questions about every page you publish</li><li>Run the five-minute pre-publish check</li><li>Explore the WCAG quick reference: w3.org/WAI/WCAG21/quickref</li><li>Bring one of your own pages next time — we will check it together</li></ul>
+  <div class="speaker-notes" role="note" aria-label="Speaker notes"><h3>Speaker notes</h3><p>Recap in one breath: perceivable, operable, understandable, robust — four questions you can ask about any page. Point people at the WCAG 2.1 quick reference (w3.org) and their organisation's accessibility policy. Thank the room; invite them to bring a real page to the next session and run the checklist on it together.</p></div>
+  </section>
+</main>
+<footer class="toolbar">
+  <div class="controls">
+    <button type="button" id="prev">Previous slide</button>
+    <button type="button" id="next">Next slide</button>
+    <button type="button" id="toggle-notes" aria-expanded="false" aria-pressed="false">Speaker notes</button>
+  </div>
+  <p class="hint">Keyboard: arrow keys, Space, PageUp/PageDown, Home/End move between slides. Press N for speaker notes.</p>
+</footer>
+<script>
+
+(function () {
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var counter = document.getElementById('counter');
+  var bar = document.getElementById('progress-fill');
+  var prev = document.getElementById('prev');
+  var next = document.getElementById('next');
+  var notesBtn = document.getElementById('toggle-notes');
+  var i = 0;
+
+  function show(n, focusHeading) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach(function (s, idx) { s.hidden = idx !== i; });
+    counter.textContent = 'Slide ' + (i + 1) + ' of ' + slides.length;
+    bar.style.width = (((i + 1) / slides.length) * 100) + '%';
+    prev.disabled = i === 0;
+    next.disabled = i === slides.length - 1;
+    if (location.hash !== '#s' + (i + 1)) history.replaceState(null, '', '#s' + (i + 1));
+    if (focusHeading) {
+      var h = slides[i].querySelector('h2');
+      if (h) h.focus({ preventScroll: false });
+    }
+  }
+
+  function toggleNotes() {
+    var open = document.body.classList.toggle('show-notes');
+    notesBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    notesBtn.setAttribute('aria-pressed', open ? 'true' : 'false');
+  }
+
+  document.addEventListener('keydown', function (e) {
+    var t = e.target;
+    if (t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable)) return;
+    switch (e.key) {
+      case 'ArrowRight': case 'ArrowDown': case 'PageDown': case ' ':
+        e.preventDefault(); show(i + 1, true); break;
+      case 'ArrowLeft': case 'ArrowUp': case 'PageUp':
+        e.preventDefault(); show(i - 1, true); break;
+      case 'Home': e.preventDefault(); show(0, true); break;
+      case 'End': e.preventDefault(); show(slides.length - 1, true); break;
+      case 'n': case 'N': toggleNotes(); break;
+    }
+  });
+
+  prev.addEventListener('click', function () { show(i - 1, true); });
+  next.addEventListener('click', function () { show(i + 1, true); });
+  notesBtn.addEventListener('click', toggleNotes);
+
+  // deep link support (#s7)
+  var m = /^#s(\d+)$/.exec(location.hash);
+  show(m ? parseInt(m[1], 10) - 1 : 0, false);
+})();
+
+</script>
+</body>
+</html>

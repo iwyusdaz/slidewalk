@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>slidewalk — lesson outline in, WCAG-gated dual-format deck out</title>
+<meta name="description" content="Case study: slidewalk turns a lesson outline into an accessible single-file HTML deck and a native PPTX from one source of truth, with accessibility gates that fail the build." />
+<style>
+:root{--bg:#ffffff;--fg:#1b2733;--muted:#4c5a68;--accent:#0b5fa5;--panel:#eaf1f7;--border:#b9c6d2}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;background:var(--bg);color:var(--fg)}
+header.site{background:#12293e;color:#f2f6fa;padding:2rem clamp(1rem,4vw,3rem)}
+header.site h1{margin:0 0 .25rem;font-size:clamp(1.5rem,4vw,2.2rem)}
+header.site p{margin:.25rem 0;color:#c6d4e2}
+main{max-width:52rem;margin:0 auto;padding:1.5rem clamp(1rem,4vw,3rem) 3rem}
+h2{font-size:1.5rem;margin-top:2.5rem;border-bottom:2px solid var(--accent);padding-bottom:.25rem}
+h3{font-size:1.1rem;margin-top:1.5rem}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible{outline:3px solid #b45309;outline-offset:2px}
+.notice{background:var(--panel);border-left:.3rem solid var(--accent);padding:.75rem 1rem;border-radius:0 .4rem .4rem 0}
+.card{border:1px solid var(--border);border-radius:.5rem;padding:1rem 1.25rem;margin:1rem 0}
+table{border-collapse:collapse;width:100%;margin:1rem 0}
+th,td{border:1px solid var(--border);padding:.5rem .7rem;text-align:left;vertical-align:top}
+th{background:var(--panel)}
+code,pre{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.9em}
+pre{background:var(--panel);padding:.9rem;border-radius:.4rem;overflow-x:auto}
+pre[tabindex="0"]:focus-visible{outline:3px solid #b45309;outline-offset:2px}
+figure{margin:1.5rem 0}
+figure img{max-width:100%;height:auto;border:1px solid var(--border);border-radius:.4rem}
+figcaption{font-size:.9rem;color:var(--muted);margin-top:.4rem}
+footer{max-width:52rem;margin:0 auto;padding:1rem clamp(1rem,4vw,3rem) 3rem;color:var(--muted);font-size:.9rem}
+.skip-link{position:absolute;left:-9999px;background:var(--accent);color:#fff;padding:.6rem 1rem;z-index:10}
+.skip-link:focus{left:.5rem;top:.5rem}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+<header class="site">
+  <h1>slidewalk</h1>
+  <p>Lesson outline in, WCAG-gated dual-format deck out.</p>
+  <p>An agent-skill-style toolchain for curriculum developers and instructional designers: one outline becomes an accessible single-file HTML deck <em>and</em> a native PPTX — and the build fails if the accessibility gates say no.</p>
+</header>
+<main id="main">
+
+<p class="notice">
+<strong>What is real here:</strong> the pipeline, the gate runner, and the reference deck are working software — every gate result below is reproducible with the commands shown. <strong>What is not:</strong> no human or assistive-technology user has reviewed the output yet (see <a href="#evidence">Evidence and evaluation</a>), and the checkpoint questions are template-generated, not written by an educator.
+</p>
+
+<h2>The problem</h2>
+<p>The best open-source deck generators make beautiful slides and treat accessibility as a claim, not a gate. Real decks shipped to students fail on predictable things: missing alt text, low contrast, heading-order chaos, keyboard-dead HTML decks, and speaker notes nobody wrote. PowerPoint's own checker only runs after the fact, inside PowerPoint, by someone who remembers to run it.</p>
+<p>slidewalk inverts that: accessibility is a build gate with veto power. If the deck fails, the build fails, with a fix list.</p>
+
+<h2>Audience and context</h2>
+<p>Curriculum developers and instructional designers who produce teaching decks on deadlines. They usually don't write code; they do write outlines. The tool takes the artifact they already have — a lesson outline — and returns the two artifacts they must deliver: a web deck and a PPTX.</p>
+
+<h2>The pipeline</h2>
+<pre tabindex="0">lesson outline (markdown)
+  → intermediate deck JSON     (validated: alt text required, no orphan checkpoints)
+  → single-file HTML deck      (keyboard nav, notes toggle, 320px reflow safe)
+  → native PPTX                (python-pptx: real text frames, notes per slide)
+  → facilitator guide (md)     (objectives, notes, checkpoint prompts)
+  → accessibility gates        (axe · keyboard · 320px · contrast · alt · headings · lang)
+       └─ failure = non-zero exit + actionable fix list</pre>
+
+<h2>Key design decisions</h2>
+
+<div class="card">
+<h3>1. Gates run against <em>all</em> slides, not just the visible one</h3>
+<p><strong>Decision:</strong> the gate runner unhides every slide before running axe, then audits the interactive behavior separately on the real page. <strong>Alternative considered:</strong> running axe on each slide in isolation. <strong>Rationale:</strong> hidden slides are invisible to axe's default run — a deck would pass while slides 2–17 were unaudited. This caught real contrast bugs in an early theme during development.</p>
+</div>
+
+<div class="card">
+<h3>2. The alt-text rule lives in the validator, not just the gate</h3>
+<p><strong>Decision:</strong> the deck JSON validator refuses to build any deck with an informative image that lacks alt text — before any output exists. The gate runner checks it again on the HTML. <strong>Rationale:</strong> failing late costs a rebuild; failing early costs a one-line outline edit. The rule is enforced twice on purpose.</p>
+</div>
+
+<div class="card">
+<h3>3. Checkpoints are template-generated and labeled, never faked</h3>
+<p><strong>Decision:</strong> retrieval-practice prompts are derived by template from each slide's own objective, inserted every N content slides, and visibly labeled "Auto-generated retrieval prompt — review before teaching". <strong>Alternative considered:</strong> calling an LLM to write questions. <strong>Rationale:</strong> unlabeled AI questions would be unreviewable pedagogy; template prompts are honest, reproducible, and cite their source slide, and the facilitator guide instructs the educator to personalize them.</p>
+</div>
+
+<div class="card">
+<h3>4. Dual format from one intermediate JSON</h3>
+<p><strong>Decision:</strong> outline → deck JSON → {HTML, PPTX, guide}. <strong>Alternative considered:</strong> generating PPTX from the HTML. <strong>Rationale:</strong> a shared intermediate format means a gate fix or an outline edit regenerates both formats identically. The known cost: PPTX figures are text placeholders (see limitations).</p>
+</div>
+
+<div class="card">
+<h3>5. Themes are gated assets, verified before anything is built on them</h3>
+<p><strong>Decision:</strong> each of the three themes (slate, midnight, ember) is rendered on a fixed probe deck and must pass every gate before use. <strong>Rationale:</strong> theme palettes are where contrast failures breed; gating them once means every deck built on them inherits a verified palette.</p>
+</div>
+
+<h2>The reference deck</h2>
+<p>"Intro to WCAG for content authors" — 17 slides (11 content, 3 sections, 2 checkpoints, 1 title), generated by the full pipeline, all gates green. This deck is itself the demo deliverable:</p>
+<ul>
+<li><a href="deck.html">Open the HTML deck (deck.html)</a> — keyboard-navigable: arrows, Space, PageUp/PageDown, Home/End; press N for speaker notes</li>
+<li><a href="deck.pptx" download>Download the PPTX (deck.pptx, 71 KB)</a> — native text frames, speaker notes on every slide</li>
+<li><a href="facilitator-guide.md">Read the facilitator guide (facilitator-guide.md)</a></li>
+<li><a href="deck.json">Inspect the intermediate deck.json</a></li>
+</ul>
+
+<figure>
+<img src="assets/deck-pour.png" alt="Screenshot of the reference deck on the slide 'The four POUR principles': dark theme, slide title, four bullets, and a diagram of the four POUR principles as labelled cards." width="1280" height="800" />
+<figcaption>The reference deck, midnight theme, slide 5 of 17. Screenshot, taken with Playwright.</figcaption>
+</figure>
+
+<figure>
+<img src="assets/deck-checkpoint.png" alt="Screenshot of a checkpoint slide labeled 'Auto-generated retrieval prompt — review before teaching', showing a question box, its source slide, and visible speaker notes." width="1280" height="800" />
+<figcaption>A retrieval-practice checkpoint with speaker notes toggled on. The label makes the automation honest.</figcaption>
+</figure>
+
+<figure>
+<img src="assets/deck-320.png" alt="Screenshot of the same deck at a 320-pixel-wide viewport: content reflows into a single column with no horizontal scrolling." width="320" height="740" />
+<figcaption>The same deck at 320 px width — no horizontal scroll (WCAG 1.4.10 Reflow).</figcaption>
+</figure>
+
+<h2 id="evidence">Evidence and evaluation</h2>
+
+<h3>What was measured (reproduce with the commands shown)</h3>
+<table>
+<caption>Gate results, 2026-10-31. All commands runnable from the repo root.</caption>
+<thead>
+<tr><th>Check</th><th>Reference deck (docs/deck.html)</th><th>Command</th></tr>
+</thead>
+<tbody>
+<tr><td>axe (WCAG 2.1 A/AA + best practice, all slides visible)</td><td>0 critical / 0 serious / 0 moderate / 0 minor</td><td><code>npm run gates</code></td></tr>
+<tr><td>Keyboard traversal (all 17 slides, forward + reverse + Home/End/Space + notes toggle)</td><td>PASS</td><td><code>npm run gates</code></td></tr>
+<tr><td>320 px reflow (every slide)</td><td>PASS</td><td><code>npm run gates</code></td></tr>
+<tr><td>Contrast ≥ 4.5:1 (axe color-contrast)</td><td>PASS</td><td><code>npm run gates</code></td></tr>
+<tr><td>Alt text + heading structure + lang</td><td>PASS</td><td><code>npm run gates</code></td></tr>
+<tr><td>Theme probes (slate / midnight / ember), same gates</td><td>all PASS</td><td><code>npm run gates:themes</code></td></tr>
+<tr><td>Negative test: broken deck → build refusal + 10 gate failures caught</td><td>PASS (gates correctly fail)</td><td><code>sh tests/run-negative-tests.sh</code></td></tr>
+<tr><td>PPTX round-trip (zip parts + python-pptx re-read: titles, bullets, notes)</td><td>17/17 slides verified</td><td><code>npm run pptx:verify</code></td></tr>
+</tbody>
+</table>
+
+<h3>What the evidence can and cannot show</h3>
+<p><strong>Can:</strong> the HTML deck passes the automated WCAG 2.1 A/AA checks that axe implements, every slide is keyboard-reachable, the layout reflows at 320 px, and the gate runner demonstrably catches seeded failures (a gate that cannot fail is decoration). <strong>Cannot:</strong> show that the deck is usable with a screen reader, that the alt text is <em>good</em> (only that it exists), that the teaching is effective, or that the auto-generated questions are pedagogically sound. No human has tested this deck; no one using assistive technology daily has reviewed it.</p>
+
+<h3>What it led to</h3>
+<p>Development was driven by the gates: the first theme probes failed on duplicate landmark roles (<code>aside</code> speaker notes became <code>role="note"</code>) and the gate runner's keyboard traversal caught a missing focus-management behavior. The PPTX round-trip check caught checkpoint slides silently dropping their instruction bullets. Negative tests exist because an earlier version of the gate runner crashed instead of reporting on a non-conforming deck.</p>
+
+<h2>Accessibility of this site and the deck</h2>
+<p>See the full <a href="accessibility-statement.html">accessibility statement</a>. Short version: this page and the reference deck pass the automated checks listed above; manual and assistive-technology testing has <strong>not</strong> been done yet, and no compliance or certification is claimed.</p>
+
+<h2>Honest limitations</h2>
+<ul>
+<li><strong>Automated ≠ accessible.</strong> The gates cover WCAG 2.1 A/AA automated checks. Manual testing (keyboard habits vary, screen reader output, cognitive load) is still recommended before high-stakes delivery. The deck's own footer and the facilitator guide say so.</li>
+<li><strong>PPTX accessibility is not enforced.</strong> PowerPoint's built-in Accessibility Checker can be recommended in the facilitator guide, but slidewalk cannot run it from code. Figures are text placeholders in the PPTX; images render only in the HTML deck.</li>
+<li><strong>Checkpoints are templates.</strong> They are labeled as auto-generated, cite their source slide, and the facilitator guide instructs reviewers to personalize them before teaching.</li>
+<li><strong>No LLM in the loop.</strong> Nothing calls a model; question generation is deterministic templating.</li>
+<li><strong>Human review pending.</strong> The educator-review protocol is ready in <code>evaluation/human-protocol/</code>; results tables stay empty until a real educator runs it.</li>
+</ul>
+
+<h2>What I'd do differently / next steps</h2>
+<ul>
+<li>Round-trip the deck through a real screen reader (automated VoiceOver via Guidepup) as a future gate.</li>
+<li>Support images in PPTX (convert SVG → PNG at build time) and a PowerPoint theme with proper slide masters.</li>
+<li>Add a "bake-off" preview page that renders the user's real content in all three themes side by side.</li>
+</ul>
+
+<h2>Tools used</h2>
+<p>Node.js (deck parsing, HTML generation, gate runner), Playwright + axe-core 4.11 (gates), python-pptx 1.0.2 (PPTX generation and round-trip verification), gitleaks (secret scanning before push). AI assistance: this toolchain and its reference content were built with AI assistance and reviewed by the repository owner; the review was of code and outputs, not by an educator or an accessibility user — that review is still pending.</p>
+
+</main>
+<footer>
+<p>Code: MIT. Deck content and case study: CC BY 4.0. See <a href="https://github.com/iwyusdaz/slidewalk/blob/main/ATTRIBUTION.md">ATTRIBUTION.md</a> for inspirations and third-party material.</p>
+</footer>
+</body>
+</html>
